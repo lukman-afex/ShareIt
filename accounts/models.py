@@ -54,6 +54,10 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
+    is_suspended = models.BooleanField(default=False)
+
+    suspended_user = Suspendeduser
+    objects = ActiveUser
 
     # fields with defaults
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -106,12 +110,8 @@ class UserProfile(models.Model):
     highest_qualification = models.CharField(max_length=20, choices=highest_qualification_choice)
     hometown = models.CharField(max_length=30, null=True, blank=True)
     dob = models.DateField(null=True, blank=True)
-    gender = models.IntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=3, null=True, blank=True, choices=gender)
     bio = models.TextField(max_length=200, blank=True)
-    is_suspended = models.BooleanField(default=False)
-
-    suspended_user = Suspendeduser
-    objects = ActiveUser
 
     def __str__(self):
         return f"{self.user.username}"
